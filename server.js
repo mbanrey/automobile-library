@@ -6,6 +6,9 @@ const db = require('./config/db')
 const PORT = 8000
 
 const carRoutes = require('./routes/car-routes')
+
+const requestLogger = require('./lib/request-logger')
+const carSeed = require('./lib/car-seed')
 //deprecation warning
 mongoose.set('strictQuery', true)
 
@@ -26,7 +29,11 @@ app.use(cors({ origin: 'http://127.0.0.1:5501'}))
 ///need to be able to accept json
 app.use(express.json())
 
+app.use(requestLogger)
+
 app.use(carRoutes)
+
+app.use('/seed', carSeed)
 
 app.listen(PORT, () =>{
     console.log(`Listening on ${PORT}`)
